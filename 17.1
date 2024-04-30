@@ -1,0 +1,19 @@
+import sqlite3
+connection = sqlite3.connect('C:/Users/conno/Desktop/Python Chapter 17/books.db')
+import pandas as pd
+lastnames = pd.read_sql('SELECT last FROM authors ORDER BY last DESC', connection)
+print(lastnames)
+titles = pd.read_sql('SELECT title FROM titles ORDER BY title ASC', connection)
+print(titles)
+
+booksFromAuthor = pd.read_sql("SELECT title, copyright, titles.isbn FROM titles INNER JOIN author_ISBN ON titles.isbn = author_ISBN.isbn WHERE author_ISBN.id = '2' ORDER BY title ASC", connection).head()
+print(booksFromAuthor)
+
+cursor = connection.cursor()
+cursor = cursor.execute("INSERT INTO authors (first, last) VALUES ('Mary', 'Sue')")
+
+cursor = connection.cursor()
+cursor = cursor.execute("INSERT INTO titles (title, copyright, isbn, edition) VALUES ('Coding For Dummies', '2024', '1001', '1')")
+cursor = cursor.execute("INSERT INTO author_ISBN (isbn, id) VALUES ('1001', '8')")
+
+connection.close()
